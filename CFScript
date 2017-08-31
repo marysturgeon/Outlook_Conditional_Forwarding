@@ -1,0 +1,57 @@
+Sub SalesTeamSelectForward(Item As Outlook.MailItem)
+
+Dim StartDate As Date
+Dim CurrentRep As Integer
+
+Dim FirstRep As String
+Dim SecondRep As String
+Dim ThirdRep As String
+
+Dim DateRec As Date
+
+' This is the section where you will change variables to set this rule's behavior! '
+
+'Set the Starting Date for any date where you know who the rep is. '
+'Format should look like this #mm/dd/yyyy 11:59 PM# (The 11:59 is important!) '
+
+StartDate = #10/10/2016 11:59:00 PM#
+
+'Set the Current Rep to the Rep who is working on the Starting Date'
+
+CurrentRep = 1
+
+'These three lines are the e-mail addresses for your three reps'
+'Make sure they are in double quotes!'
+
+FirstRep = "address1@email.com"
+SecondRep = "address2@email.com"
+ThirdRep = "address3@email.com"
+
+'From here on, you shouldn't need to edit any more code. '
+'If you have any problems, contact me at mary@arcadewayfinding.com '
+
+DateRec = Item.ReceivedTime
+Set myForward = Item.Forward
+
+    While (StartDate < DateRec)
+        
+        If CurrentRep = 3 Then
+        CurrentRep = 0
+        End If
+        
+    CurrentRep = CurrentRep + 1
+    StartDate = StartDate + 1
+    Wend
+    
+    Select Case CurrentRep
+        Case 1
+            myForward.Recipients.Add FirstRep
+        Case 2
+            myForward.Recipients.Add SecondRep
+        Case 3
+            myForward.Recipients.Add ThirdRep
+    End Select
+    
+   myForward.Send
+            
+End Sub
